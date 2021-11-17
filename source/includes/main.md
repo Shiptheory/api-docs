@@ -160,7 +160,7 @@ echo $result;
 ```
 
 ```javascript
-// make sure you have installed the reques module (npm install request)
+// make sure you have installed the request module (npm install request)
 var request = require('request');
 
 var options = {
@@ -241,7 +241,8 @@ Parameter | Required | Description
 reference | Yes | Your unique reference for this shipment
 reference2 | Yes | A second non-unique reference
 delivery_service | No | The Shiptheory delivery service id. See Delivery Services. If this is not provided or you pass a delivery service that does not exist, the shipment will be subject to any shipping rules setup on your account
-shipment_detail | |
+ | | 
+**shipment_detail** | |
 weight | Yes | The weight of the shipment in Kilograms to two decimal places
 parcels | Yes | The number of boxes or labels as a full number
 value | Yes | The monetary shipment cost to the customer
@@ -249,10 +250,13 @@ enhancement_id | No | Carrier enhancement, only used when passing a delivery_ser
 format_id | No | Carrier format, only used when passing a delivery_service. See GET Services for ID's
 instructions | No | Delivery instructions
 channel_shipservice_name | No | A description of the shipping option chosen by the customer at order time
-recipient | |
+duty_tax_number | No | Shipment duty tax number. Required if `duty_tax_number_type` is specified
+duty_tax_number_type | No | "ABN", "IOSS", "IRD", "OSS", "VOEC" or "ARN". Required if `duty_tax_number` is specified
+ | | 
+**recipient** | |
 company | No | The recipient company name
-first name | Yes | First name of the receiver
-last name | Yes | The last name of the receiver
+firstname | Yes | First name of the receiver
+lastname | Yes | The last name of the receiver
 address_line_1 | Yes | Delivery address line 1
 address_line_2 | No | Delivery address line 2
 address_line_3 | No | Delivery address line 3
@@ -263,7 +267,14 @@ postcode | Yes | The delivery postal or zip code
 telephone | No | Delivery contact telephone number
 mobile | No | Delivery contact mobile number
 email | No | Delivery contact email address
-products | |
+tax_number | No | Receiver tax number
+ | | 
+**recipient.tax_numbers** | No | Optional array of recipient tax numbers
+tax_number | Cond | Recipient tax number value. Required if `tax_number_type` is specified
+tax_number_type | Cond | "VAT" or "EORI". Required if `tax_number` is specified
+ | | 
+ | | 
+**products** | |
 name | Yes | Name of the product being sent
 sku | Yes | SKU of the product being sent
 value | Yes | The price of the product to the customer
@@ -371,14 +382,15 @@ Refer to the Errors section of the documentation for HTTP Error Codes used. Succ
 
 Parameter | Description
 --------- | -----------
-shipment | |
+**shipment** | |
 channel_reference_id | The unique reference used when creating the shipment. This is usually the Shipment ID or Order ID.
 channel_reference_id | A second non-unique reference
 created  | The datetime the shipment was created
 modified | The last datetime the shipment was updated
 status | The status of the shipment now. <a href="http://support.shiptheory.com/support/solutions/articles/12400-shiptheory-statuses-explained" target="_blank">See statuses</a>
 label | Shipping label, where available as a base64 encoded PDF 
-messages | |
+ | | 
+**messages** | |
 message | Activity reported by Shiptheory
 created | Datetime of activity
 type | Type of activity. Error, Info or Success
